@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="net.eimarketing.eim_20180528.dao.mapper.VideoMapper">
+
+	<!-- 上传视频 -->
+	<insert id="addVideo" parameterType="net.eimarketing.eim_20180528.entity.Video">
+		INSERT INTO
+		eim20180528_video
+		(video_name, video_url, video_img, employee_id, employee_name, employee_area, video_tag,upload_time,openId,img)
+		VALUES
+		(#{video_name, jdbcType=VARCHAR}, #{video_url, jdbcType=VARCHAR},
+		#{video_img, jdbcType=VARCHAR},#{employee_id, jdbcType=VARCHAR}, #{employee_area, jdbcType=VARCHAR},
+		#{employee_name, jdbcType=VARCHAR}, #{video_tag, jdbcType=VARCHAR}, #{upload_time, jdbcType=TIMESTAMP },#{openId,jdbcType=VARCHAR},#{img,jdbcType=VARCHAR})
+	</insert>
+	
+	<!--用户登陆 -->
+	<select id="selectVideoNum" parameterType="java.lang.String" resultType="int">
+		SELECT
+		count(video_id)
+		FROM
+			eim20180528_video
+		WHERE
+		employee_id = #{employee_id}
+	</select>
+
+	<!-- 删除某一指定视频 -->
+	<delete id="deleteVideo" parameterType="net.eimarketing.eim_20180528.entity.Video">
+		delete from
+		eim20180528_video
+		where
+		video_id = #{video_id}
+	</delete>
+
+	<!-- 查询前15个视频 -->
+	<select id="selectTop15Video" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_id, video_url, video_img, employee_id, employee_name, employee_area, video_tag, fabulous
+		FROM
+		eim20180528_video
+		ORDER BY fabulous
+		DESC LIMIT {num},15
+	</select>
+	
+	<!-- 根据数字查询第X个视频的缩略图 -->
+	<select id="selectTopXVideo" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_id, video_img, fabulous
+		FROM
+		eim20180528_video
+		ORDER BY fabulous
+		DESC LIMIT #{num},1
+	</select>
+	<!-- 根据数字查询第X个视频的地址 -->
+	<select id="selectTopXUrl" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_id, video_url, employee_id, employee_name,  video_tag, fabulous, comment_num
+		FROM
+		eim20180528_video
+		ORDER BY fabulous
+		DESC LIMIT #{num},1
+	</select>
+	
+	<!-- 查询全部视频 -->
+	<select id="selectAllVideo" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_id, video_url, video_img, employee_id, employee_name, employee_area, video_tag, fabulous
+		FROM
+		eim20180528_video
+		ORDER BY fabulous
+		DESC
+	</select>
+
+	<!-- 查询某一用户的视频 -->
+	<select id="selectVideoByUser" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_id, video_img, video_url, fabulous,openId,img
+		FROM
+		eim20180528_video
+		WHERE
+		employee_id = #{employee_id}
+	</select>
+	
+	<!-- 某一用户上传有视频则返回用户id -->
+	<select id="selectVideoIdByUser" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		employee_id
+		FROM
+		eim20180528_video
+		WHERE
+		employee_id = #{employee_id}
+	</select>
+	
+	<select id="selectVideoUrlByUser" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_url
+		,img
+		FROM
+		eim20180528_video
+		WHERE
+		employee_id = #{employee_id}
+	</select>
+
+
+	<!-- 查询某一地区的视频 -->
+	<select id="selectVideoByArea" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_id, video_url, video_img, employee_id, employee_name, employee_area, video_tag, fabulous
+		FROM
+		eim20180528_video
+		WHERE
+		employee_area = #{employee_area}
+	</select>
+
+	<!-- 查询某一指定视频 -->
+	<select id="selectVideoById" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_url, employee_id, employee_name, video_tag, fabulous, comment_num,openId,img
+		FROM
+		eim20180528_video
+		WHERE
+		video_id = #{video_id}
+	</select>
+	
+	<!-- 查询某一指定视频 -->
+	<select id="selectVideosById" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_id, video_url, video_img, employee_id, employee_name, employee_area, video_tag, fabulous
+		FROM
+		eim20180528_video
+		WHERE
+		video_id = #{video_id}
+	</select>
+	
+	<!-- 查询某一指定视频 -->
+	<select id="selectUserById" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		employee_id, employee_name
+		FROM
+		eim20180528_video
+		WHERE
+		video_id = #{video_id}
+	</select>
+	
+	<!-- 查询某一指定视频 -->
+	<select id="selectVideoImgById" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_id, video_img, video_url, fabulous
+		FROM
+		eim20180528_video
+		WHERE
+		video_id = #{video_id}
+	</select>
+
+	<!-- 查询视频点赞数 -->
+	<select id="selectFabulous" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="int">
+		SELECT
+		fabulous
+		FROM
+		eim20180528_video
+		WHERE
+		video_id = #{video_id}
+	</select>
+
+	<!-- 为视频点赞 -->
+	<update id="updateFabulous" parameterType="net.eimarketing.eim_20180528.entity.Video">
+		UPDATE
+		eim20180528_video
+		SET
+		fabulous = (fabulous+1)
+		where
+		video_id = #{video_id}
+	</update>
+
+	<!-- 添加一条评论则视频评论数+1 -->
+	<update id="updateCommentNum" parameterType="net.eimarketing.eim_20180528.entity.VideoComment">
+		UPDATE
+		eim20180528_video
+		SET
+		comment_num = (comment_num+1)
+		where
+		video_id = #{video_id}
+	</update>
+	
+	<!-- 通过用户id查询视频信息 -->
+	<select id="selectNumById" parameterType="net.eimarketing.eim_20180528.entity.Video"
+		resultType="int">
+		select 
+			COUNT(video_id) 
+		from 
+			eim20180528_video 
+		where 
+			employee_id = #{employee_id}
+	</select>
+	
+	<!-- 查询某一指定视频 -->
+	<select id="getVideoById" parameterType="java.lang.Integer"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_url, employee_id, employee_name, video_tag, fabulous, comment_num,openId,img
+		FROM
+		eim20180528_video
+		WHERE
+		video_id = #{video_id}
+	</select>
+	<!-- 查询分页视频 -->
+	<select id="selectLimit" parameterType="java.lang.Integer"
+		resultType="net.eimarketing.eim_20180528.entity.Video">
+		SELECT
+		video_id, video_url, video_img, employee_id, employee_name, employee_area, video_tag, fabulous
+		FROM
+		eim20180528_video
+		ORDER BY fabulous
+		DESC LIMIT #{begin},15
+	</select>
+</mapper>

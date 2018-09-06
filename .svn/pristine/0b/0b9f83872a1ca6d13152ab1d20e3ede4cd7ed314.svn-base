@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="net.eimarketing.eim_20180528.dao.mapper.VideoScoreMapper">
+
+	<insert id="addVideoScore"  parameterType="net.eimarketing.eim_20180528.entity.VideoScore">
+		INSERT INTO
+			eim20180528_score
+			(employee_id, employee_name, employee_area, score)
+		VALUES
+			(#{employee_id, jdbcType=VARCHAR}, #{employee_name, jdbcType=VARCHAR}, #{employee_area, jdbcType=VARCHAR}, 0)
+	</insert>
+
+	<!-- 为某一用户打分 -->
+	<update id="updateVideoScore" parameterType="net.eimarketing.eim_20180528.entity.VideoScore">
+		UPDATE 
+			eim20180528_score SET score = #{score} ,time =#{time}
+		where employee_id = #{employee_id}
+	</update>
+
+	<!-- 根据地区查看分数排行 -->
+	<select id="selectTopScore" parameterType="String"
+		resultType="net.eimarketing.eim_20180528.entity.VideoScore">
+		SELECT 
+			employee_id, employee_name, score
+		FROM 
+			eim20180528_score 
+		WHERE 
+			employee_area = #{employee_area} 
+		ORDER BY score DESC
+	</select>
+
+	<!-- 查看某一用户的分数 -->
+	<select id="selectScoreByUser" parameterType="String"
+		resultType="net.eimarketing.eim_20180528.entity.VideoScore">
+		SELECT
+		employee_id, employee_name, employee_area, score
+		FROM
+		eim20180528_score
+		WHERE
+		employee_id = #{employee_id, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据评委查询对应需要打分的用户 -->
+	<select id="selectByRater" parameterType="java.lang.String"
+		resultType="net.eimarketing.eim_20180528.entity.VideoScore">
+		
+		SELECT 
+			employee_id, employee_name, score
+		from 
+			eim20180528_score
+		where 
+			rater_id = #{rater_id, jdbcType=VARCHAR}
+		order by score ASC
+	</select>
+		
+	<!-- 评委已经打过分的用户 -->
+	<select id="selectNumByRater" parameterType="java.lang.String"
+		resultType="int">
+		
+		select 
+			COUNT(score) num
+		from 
+			eim20180528_score 
+		where 
+			rater_id = #{rater_id, jdbcType=VARCHAR} and score > 0
+		
+	</select>
+	
+	<!-- 需要打分的总人数 -->
+	<select id="selectTotalByRater" parameterType="java.lang.String"
+		resultType="int">
+		
+		select 
+			COUNT(employee_id) total
+		from 
+			eim20180528_score 
+		where 
+			rater_id = #{rater_id, jdbcType=VARCHAR}
+		
+	</select>
+	
+	<!-- 根据时间查询某一时间段打分的人数 -->
+	<select id="selectNumByTime" parameterType="java.lang.String"
+		resultType="int">
+		
+		select 
+			COUNT(score_id) 
+		from 
+			eim20180528_score  
+		where 
+			time BETWEEN '2018-07-05' AND '2018-07-09'
+		
+	</select>
+	
+<!-- 	<select id="selectNumByTime" parameterType="java.lang.String"
+		resultType="int">
+		
+		select 
+			COUNT(score_id) 
+		from 
+			eim20180528_score  
+		where 
+			time BETWEEN '2018-07-05' AND '2018-07-09'
+		
+	</select> -->
+	
+		<!-- 为用户添加评委id -->
+	<update id="updateRaterId" parameterType="net.eimarketing.eim_20180528.entity.VideoScore">
+		UPDATE 
+			eim20180528_score SET rater_id = #{rater_id} 
+		where employee_id = #{employee_id}
+	</update>
+	<!-- 
+		public List<VideoScore> getSocrelist();
+	 -->
+	 <select id="getSocrelist" parameterType="String" resultType="net.eimarketing.eim_20180528.entity.VideoScore">
+	 	select * from eim20180528_score where employee_area = #{employee_area}
+	 </select>
+
+</mapper>

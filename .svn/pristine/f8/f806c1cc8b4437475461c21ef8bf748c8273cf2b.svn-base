@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+	</head>
+
+	<body>
+		<div id="app">
+			<div v-show="alertStatus" class="alert">
+				<div class="main">
+					<div class="message">{{messageInfo.txt}}</div>
+					<div @click="changeAlert" class="btn">{{messageInfo.btn}}</div>
+				</div>
+			</div>
+			<header>
+				<div class="change-box">
+					<span @click="changeRuleMask(0)" class="rule">
+						赛事规则
+					</span>
+					<span class="jyy">
+						<span class="span" @click="changeSlideStatus(0)" :class="{active: slideStatus===0}">加油员</span>
+					</span>
+					<div class="submit">
+						<span class="submit-padding">
+							<span :class="{active1: videoStatus}" @click="submit">
+								<label v-html="videoSubmit">{{}}</label>
+							</span>
+						</span>
+					</div>
+					<span class="syy">
+						<span class="span" @click="changeSlideStatus(1)"  :class="{active: slideStatus===1}">收银员</span>
+					</span>
+				</div>
+				<div class="warnning">视频时长需低于一分钟 视频大小需小于30MB</div>
+			</header>
+			<div v-show="ruleMask" class="rule-mask">
+				<div class="container">
+					<div class="img-box">
+						<span @click="changeRuleMask" class="close">
+						
+					</span>
+						<span @click="hrefVideo(0)" class="jyyVideo">
+						
+					</span>
+						<span @click="hrefVideo(1)" class="syyVideo">
+						
+					</span>
+						<img src="img/rule.jpg" />
+					</div>
+				</div>
+			</div>
+			<div class="main">
+				<div v-if="slideStatus === 0" class="jyy-box">
+					<div v-for="(item, index) in jyyList" class="input-box">
+						<div class="mask">
+							{{item.txt}}
+							<span v-if="item.status"></span>
+						</div>
+						<input @change="inputJyyChange(index)" type="file" />
+					</div>
+				</div>
+				<div v-if="slideStatus === 1" class="syy-box">
+					<div v-for="(item, index) in syyList" class="input-box">
+						<div class="mask">
+							{{item.txt}}
+							<span v-if="item.status"></span>
+						</div>
+						<input @change="inputSyyChange(index)" type="file" />
+					</div>
+				</div>
+			</div>
+			<footer class="warnning">
+				注: 视频上传成功后，将无法修改，请谨慎操作
+			</footer>
+		</div>
+	</body>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+
+</html>

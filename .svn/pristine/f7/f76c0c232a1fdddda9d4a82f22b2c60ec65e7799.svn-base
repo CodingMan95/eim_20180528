@@ -1,0 +1,7 @@
+#url=jdbc\:mysql\://111.231.221.220:13306/app?useUnicode\=true&characterEncoding\=UTF8&autoReconnect=true&rewriteBatchedStatements=true
+url=jdbc\:mysql\://39.104.125.243:3306/eim_20180528?useUnicode\=true&characterEncoding\=UTF8&autoReconnect=true&rewriteBatchedStatements=true&useSSL=false
+driverClassName=com.mysql.jdbc.Driver
+username=root
+#username=yeq74101
+password=root
+#password=yeq74101

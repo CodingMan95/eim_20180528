@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="net.eimarketing.eim_20180528.dao.mapper.VideoCommentMapper">
+
+	<!-- 查询某一视频的全部评论 -->
+	<select id="selectAllComment" parameterType="java.lang.Integer"
+		resultType="net.eimarketing.eim_20180528.entity.VideoComment">
+		select
+			comment_id, commentator_id, commentator_name, content, fabulous, time,openId
+		from
+			eim20180528_comment
+		where
+			video_id = #{video_id}
+		ORDER BY fabulous
+		DESC
+	</select>
+	
+	
+	
+	<!-- 查询某一视频的全部评论 -->
+	<select id="selectIdByUser" parameterType="net.eimarketing.eim_20180528.entity.VideoComment"
+		resultType="int">
+		select
+			comment_id
+		from
+			eim20180528_comment
+		where
+			content = #{content}
+		ORDER BY fabulous
+		DESC
+	</select>
+
+	<!-- 通过评论id查询某一条评论的点赞数 -->
+	<select id="selectFabulousById" parameterType="net.eimarketing.eim_20180528.entity.VideoComment"
+		resultType="int">
+		select
+			fabulous
+		from
+			eim20180528_comment
+		where
+			comment_id = #{comment_id}
+	</select>
+	<!-- 通过评论id查询某一条评论的点赞数 -->
+	<select id="getList" parameterType="net.eimarketing.eim_20180528.entity.VideoComment"
+		resultType="net.eimarketing.eim_20180528.entity.VideoComment">
+		select
+			commentator_id,  commentator_name, content, employee_id, employee_name,openId
+		from
+			eim20180528_comment
+		where
+			employee_id = #{employee_id}
+	</select>
+	
+	<!-- 为评论点赞 -->
+	<update id="updateCommentFabulous" parameterType="net.eimarketing.eim_20180528.entity.VideoComment">
+		UPDATE
+		eim20180528_comment
+		SET
+		fabulous = (fabulous+1)
+		where
+		comment_id = #{comment_id}
+	</update>
+	
+	<!-- 添加评论 -->
+	<insert id="addComment"  parameterType="net.eimarketing.eim_20180528.entity.VideoComment">
+		INSERT INTO
+			eim20180528_comment
+			(commentator_id,  commentator_name, content, video_id, employee_id, employee_name, time,openId)
+		VALUES
+			(#{commentator_id, jdbcType=VARCHAR}, #{commentator_name, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR},
+			#{video_id, jdbcType=INTEGER}, #{employee_id, jdbcType=VARCHAR}, #{employee_name, jdbcType=VARCHAR}, #{time, jdbcType=TIMESTAMP},#{openId, jdbcType=TIMESTAMP})
+	</insert>
+
+</mapper>

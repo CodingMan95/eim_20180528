@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e08afc4fe3c5008fbda178648a5e58ce";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<head>
+<meta charset="UTF-8">
+<title>登录</title>
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<meta content="telephone=no,email=no" name="format-detection">
+<meta content="fullscreen=yes,preventMove=no" name="ML-Config">
+<meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<script type="text/javascript">
+    var appId = "wx0a977c364018150d";
+    
+    //var ru = "http://localhsot:8080/eim_20180528/admin.do";//跳转主页
+	//var ru = 'http://app.i-mineral.cn/eim_20180528/admin.do';//跳转主页
+	var ru = location.origin + "/eim_20180528/admin.do";//跳转主页
+	
+	var toUrl = "http://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri="
+			+ encodeURIComponent("http://wechat.i-mineral.cn/wechat/LoginSerlet.do")
+			+ "&response_type=code&scope=snsapi_userinfo&state=" + getState() + "#wechat_redirect";
+	location.href = toUrl;
+	/* 0表示获取详情   1不是静默授权 */
+    function getState() {
+        return appId + "," + encodeURIComponent(ru)+","+0;
+    }
+</script>
+</head>
+</html>

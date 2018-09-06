@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="net.eimarketing.eim_20180528.dao.mapper.FlagsMapper">
+
+	<insert id="addFlag"  parameterType="net.eimarketing.eim_20180528.entity.Flags">
+		INSERT INTO
+			eim20180528_flags
+			(employee_id,  video_id, isflag)
+		VALUES
+			(#{employee_id, jdbcType=VARCHAR}, #{video_id, jdbcType=INTEGER}, 1)
+	</insert>
+
+	<!-- 给视频点赞则flag变为1 -->
+	<update id="updateFlag" parameterType="net.eimarketing.eim_20180528.entity.Flags">
+		UPDATE
+		eim20180528_flags
+		SET
+		isflag = 1
+		
+	</update>
+	
+	<!--通过flag查视频id -->
+	<select id="selectVideoByFlag" parameterType="java.lang.String" resultType="net.eimarketing.eim_20180528.entity.Flags">
+		SELECT
+		video_id
+		FROM
+		eim20180528_flags
+		WHERE
+		employee_id = #{employee_id} and isflag = 1
+	</select>
+	
+	<!--通过flag查视频id -->
+	<select id="selectFlagById" parameterType="net.eimarketing.eim_20180528.entity.Flags" resultType="int">
+		SELECT
+		count(video_id)
+		FROM
+		eim20180528_flags
+		WHERE
+		video_id = #{video_id}
+	</select>
+	
+	<!--通过flag查视频id -->
+	<select id="selectFlag" parameterType="net.eimarketing.eim_20180528.entity.Flags" resultType="int">
+		SELECT
+		count(video_id)
+		FROM
+		eim20180528_flags
+		WHERE
+		video_id = #{arg0} and employee_id =#{arg1}
+	</select>
+	
+	
+
+</mapper>

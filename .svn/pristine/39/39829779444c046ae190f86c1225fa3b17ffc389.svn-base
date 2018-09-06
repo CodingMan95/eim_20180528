@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+ 
+<title>Insert title here</title>
+</head>
+<body>
+
+评委需要评论的总人数:<div id="total"></div>
+已经打过分的人数:<div id="num"></div>
+所在区:<div id="area"></div>
+需要打分的用户信息:<div id="user"></div>
+
+</body>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript">  
+    $.ajax({  
+            type: "Get",  
+            url: "http://localhost:8080/eim_20180528/selectByRater.do",  
+            success: function(data){  
+          
+            var a = JSON.parse( data );      //json字符串转化为json对象
+
+            var b = JSON.stringify(a.user);   //可以将json对象转换成json对符串
+            $("#total").text(a.total);  
+            $("#num").text(a.num); 
+            $("#area").text(a.area); 
+            $("#user").text(b); 
+            }  
+        })  
+</script>
+</html>

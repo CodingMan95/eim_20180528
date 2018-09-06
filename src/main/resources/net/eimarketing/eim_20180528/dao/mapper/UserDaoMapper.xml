@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="net.eimarketing.eim_20180528.dao.mapper.UserMapper">
+
+	<!--用户登陆 -->
+	<select id="userLogin" parameterType="java.lang.String" resultType="net.eimarketing.eim_20180528.entity.User">
+		SELECT
+		employee_id, employee_name, employee_identity, employee_department, employee_area
+		FROM
+		eim20180528_user
+		WHERE
+		employee_id = #{arg0} and password = #{arg1}
+	</select>
+
+	<!--用户第一次登陆 -->
+	<!-- <select id="userFirstLogin" parameterType="java.lang.String" resultType="net.eimarketing.eim_20180528.entity.User"> 
+		SELECT employee_id, employee_name, employee_identity, employee_department, 
+		employee_area FROM eim20180528_user WHERE employee_id = #{employee_id,jdbcType=VARCHAR} 
+		and defaultpass = #{defaultpass,jdbcType=VARCHAR} </select> -->
+
+	<!--修改密码 -->
+	<!-- <update id="modifyPassword" parameterType="java.lang.String"> UPDATE 
+		eim20180528_user SET password = #{password,jdbcType=VARCHAR} WHERE employee_id 
+		= #{employee_id,jdbcType=VARCHAR} and defaultpass = #{defaultpass,jdbcType=VARCHAR} 
+		</update> -->
+
+	<!--获取用户登录次数 -->
+	<!-- <select id="getNum" resultType="int" parameterType="net.eimarketing.eim_20180528.entity.User"> 
+		SELECT login_num FROM eim20180528_user WHERE employee_id = #{employee_id,jdbcType=VARCHAR} 
+		</select> -->
+
+	<!--通过id查密码 -->
+	<select id="selectUserById" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+		password
+		FROM
+		eim20180528_user
+		WHERE
+		employee_id = #{employee_id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- X年X月X日前，预赛高级评委身份为游客 -->
+	<update id="updateSeniorRater1" parameterType="net.eimarketing.eim_20180528.entity.User">
+		UPDATE
+		eim20180528_user
+		SET
+		employee_identity = '游客'
+		where
+		employee_identity = '预赛高级评委'
+	</update>
+
+	<!-- X年X月X日，恢复预赛高级评委身份 -->
+	<update id="updateSeniorRater2" parameterType="net.eimarketing.eim_20180528.entity.User">
+		UPDATE
+		eim20180528_user
+		SET
+		employee_identity = '预赛高级评委'
+		where
+		employee_identity = '游客' and employee_department LIKE '%集团%'
+	</update>
+
+	<!-- X年X月X日前，预赛初级评委身份为游客 -->
+	<update id="updatePrimaryRater1" parameterType="net.eimarketing.eim_20180528.entity.User">
+		UPDATE
+		eim20180528_user
+		SET
+		employee_identity = '游客'
+		where
+		employee_identity = '预赛初级评委'
+	</update>
+
+	<!-- X年X月X日，恢复预赛初级评委身份 -->
+	<update id="updatePrimaryRater2" parameterType="net.eimarketing.eim_20180528.entity.User">
+		UPDATE
+		eim20180528_user
+		SET
+		employee_identity = '预赛初级评委'
+		where
+		employee_identity = '游客' and employee_area LIKE '%地区%'
+	</update>
+	
+	<!--通过id查用户信息 -->
+	<select id="selectUser" parameterType="java.lang.String" resultType="net.eimarketing.eim_20180528.entity.User">
+		SELECT
+		employee_id, employee_name, employee_identity, employee_department, employee_area,openId
+		FROM
+		eim20180528_user
+		WHERE
+		employee_id = #{employee_id,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updateUserInfo"  parameterType="net.eimarketing.eim_20180528.entity.User">
+		UPDATE
+			eim20180528_user
+		SET
+			openId=#{openId}
+		where
+			employee_id =#{employee_id}
+	</update>
+	
+	<!-- 通过参赛人员的id查对应评委的id -->
+	<select id="selectRaterById" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+			rater_id
+		FROM
+			eim20180528_user
+		WHERE
+			employee_id = #{employee_id,jdbcType=VARCHAR}
+	</select>
+	<!-- 根据传入的 用户身份 和  地区  查出 评委人数 -->
+	<!-- 
+		select COUNT(1) FROM eim20180528_user where employee_identity="预赛初级评委" and employee_area="冀东地区"
+	 -->
+	 <select id="getRaterByRola" parameterType="String" resultType="net.eimarketing.eim_20180528.entity.User">
+	 	select * FROM eim20180528_user 
+	 	where employee_identity="预赛初级评委" 
+	 	and employee_area=#{employee_area}
+	 </select>
+	 
+	 <!-- 
+	 	public VideoScore getScoreByUserId(String id);
+	  -->
+	  <select id="getScoreByUserId" parameterType="String" resultType="net.eimarketing.eim_20180528.entity.VideoScore">
+	  	select * from eim20180528_score
+	  	where employee_id = #{id}
+	  </select>
+
+</mapper>
